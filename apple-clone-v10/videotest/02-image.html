@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		body {
+			height: 500vh;
+		}
+		body.before-load {
+			overflow-y: hidden;
+		}
+		.sample-img {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+		}
+	</style>
+</head>
+<body class="before-load">
+	<img class="sample-img" src="../video/002/IMG_7027.JPG">
+
+	<script>
+		const imgElem = document.querySelector('.sample-img');
+		const videoImages = [];
+		let totalImagesCount = 960;
+		let progress;
+		let currentFrame;
+
+		function setImages() {
+			for (let i = 0; i < totalImagesCount; i++) {
+				let imgElem = new Image();
+				imgElem.src = `../video/002/IMG_${7027 + i}.JPG`;
+				videoImages.push(imgElem);
+			}
+		}
+
+		function init() {
+			document.body.classList.remove('before-load');
+
+			window.addEventListener('scroll', function () {
+				progress = pageYOffset / (document.body.offsetHeight - window.innerHeight);
+				if (progress < 0) progress = 0;
+				if (progress > 1) progress = 1;
+
+				requestAnimationFrame(function () {
+					currentFrame = Math.round((totalImagesCount - 1) * progress);
+					imgElem.src = videoImages[currentFrame].src;
+				});
+			});
+		}
+
+		window.addEventListener('load', init);
+		setImages();
+	</script>
+</body>
+</html>
